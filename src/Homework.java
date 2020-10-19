@@ -70,6 +70,7 @@ public class Homework extends SuperKarel {
 
         level1Move(WEST);
 
+        // go in an up and down zigzag
         boolean goingDown = true;
         while (X >= 1) {
             if (goingDown)
@@ -82,29 +83,19 @@ public class Homework extends SuperKarel {
             level1Move(WEST);
             goingDown ^= true;
         }
-
+        // go back to the origin
         while (Y > 1) level1Move(SOUTH);
 
-        //step two
-        while (X < width) {
-            move(EAST);
-            pickBeeper();
+        // step two: go around the boarders
+        turn(EAST);
+        for (int boarder = 1; boarder <= 4; boarder++) {
+            while (frontIsClear()) {
+                move();
+                pickBeeper();
+            }
+            turnLeft();
         }
 
-        while (Y < height) {
-            move(NORTH);
-            pickBeeper();
-        }
-
-        while (X > 1) {
-            move(WEST);
-            pickBeeper();
-        }
-
-        while (Y > 1) {
-            move(SOUTH);
-            pickBeeper();
-        }
         return true;
     }
 
@@ -112,6 +103,7 @@ public class Homework extends SuperKarel {
         for (int step = 1; step <= 2; step++) {
             level2Move(NORTH, step);
 
+            // go in an up and down zigzag
             while (X <= width) {
                 if (X % 2 == 0)
                     while (Y > 2) level2Move(SOUTH, step);
@@ -121,9 +113,8 @@ public class Homework extends SuperKarel {
                 if (X == width) break;
                 level2Move(EAST, step);
             }
-
+            // go over the bottom row
             while (Y > 1) level2Move(SOUTH, step);
-
             while (X > 1) level2Move(WEST, step);
         }
         return true;
@@ -131,20 +122,23 @@ public class Homework extends SuperKarel {
 
     public Boolean level3() {
         for (int step = 1; step <= 2; step++) {
+            // go to the starting point and look up
             while (!isMiddleX()) move(EAST);
             turn(NORTH);
 
+            // start pattern
             for (int pattern = 1; pattern <= 4; pattern++) {
                 while (!(isMiddleX() && isMiddleY())) level3Move(step);
                 turnLeft();
                 while (frontIsClear()) level3Move(step);
                 turnRight();
+                // covers two lines in case one or both of dimensions is even
                 if ((X == 1 || X == width) && height % 2 == 0 || (Y == 1 || Y == height) && width % 2 == 0)
                     level3Move(step);
-                
                 turnRight();
             }
 
+            // go back to origin
             while (isClear(WEST)) move(WEST);
         }
         return true;
@@ -164,6 +158,7 @@ public class Homework extends SuperKarel {
 
     public void level3Move(int step) {
         move();
+        // place a beeper if corner is in the middle
         if (step == 1 && (width > 2 && isMiddleX() || height > 2 && isMiddleY())) putBeeper();
         else pickBeeper();
     }
@@ -198,8 +193,9 @@ public class Homework extends SuperKarel {
     }
 
     public void turn(int direction) {
+        // find circular distance
         int dist = direction - facing;
-        dist += 4;
+        dist += 4; // in case the result is negative
         dist %= 4;
 
         if (dist == 1) turnLeft();
