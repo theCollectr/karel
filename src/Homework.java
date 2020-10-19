@@ -2,8 +2,6 @@ import stanford.karel.SuperKarel;
 
 import java.util.concurrent.Callable;
 
-import static java.lang.Thread.sleep;
-
 /**
  * Level 1: Put beepers only in the odd outside spots (e.g. 1x2, 2x1 are considered odd), then print the number how many you've put, and then
  * collect them all (do not duplicate beepers)
