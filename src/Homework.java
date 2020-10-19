@@ -55,7 +55,7 @@ public class Homework extends SuperKarel {
         levelTurns = turns - levelTurns;
         levelPickedBeepers = beepersPicked - levelPickedBeepers;
 
-        System.out.printf("Level %d put down %d beepers, picked up %d beepers, %d move instructions and %d turn instructions%n",
+        System.out.printf("Level %d put down %d beepers, picked up %d beepers, %d move instructions and %d turn instructions %n",
                 level, levelBeepers, levelPickedBeepers, levelMoves, levelTurns);
     }
 
@@ -68,11 +68,11 @@ public class Homework extends SuperKarel {
         while (isClear(NORTH)) level1Move(NORTH);
         height = Y;
 
-        level1Move(WEST);
-
         // go in an up and down zigzag
         boolean goingDown = true;
         while (X >= 1) {
+            level1Move(WEST);
+
             if (goingDown)
                 while (Y > 2) level1Move(SOUTH);
             else
@@ -80,7 +80,6 @@ public class Homework extends SuperKarel {
 
             if (X == 1) break;
 
-            level1Move(WEST);
             goingDown ^= true;
         }
         // go back to the origin
